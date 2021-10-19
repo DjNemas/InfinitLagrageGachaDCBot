@@ -49,16 +49,26 @@ namespace InfinitLagrageGachaDCBot
             int argPos = 0;
 
             char prefix = ' ';
+            ulong channelID = 0;
             if (!message.Author.IsBot)
             { 
                 using (SQLiteCommand com = Database.DB.CreateCommand())
                 {
-                    com.CommandText = "SELECT Prefix FROM GuildConfig WHERE GuildID = @GuildID";
+                    com.CommandText = "SELECT Prefix, ChannelID FROM GuildConfig WHERE GuildID = @GuildID";
                     com.Parameters.AddWithValue("@GuildID", socketGuild.Guild.Id);
-                    prefix = Convert.ToChar(com.ExecuteScalar());
-                    Console.WriteLine(socketGuild.Guild.Id + " Prefix: " + prefix);
+                    SQLiteDataReader reader = com.ExecuteReader();
+                    if(reader.HasRows)
+                    {
+                        while(reader.Read())
+                        {
+                            prefix = Convert.ToChar(reader.GetString(0));
+                            channelID = Convert.ToUInt64(reader.GetInt64(1));
+                            Console.WriteLine("Prefix: " + prefix + " ChannelID " + channelID);
+                        }
+                    }
                 }
             }
+            if (message.Channel.Id != channelID) return;
 
             // Determine if the message is a command based on the prefix and make sure no bots trigger commands
             if (!(message.HasCharPrefix(prefix, ref argPos) ||

@@ -28,9 +28,10 @@ namespace InfinitLagrageGachaDCBot.DiscordEvents
                 object result = com.ExecuteScalar();
                 if (result == null)
                 {
-                    com.CommandText = "INSERT INTO GuildConfig (Prefix, GuildID) VALUES (@Prefix, @GuildID)";
+                    com.CommandText = "INSERT INTO GuildConfig (Prefix, GuildID, ChannelID) VALUES (@Prefix, @GuildID, @ChannelID)";
                     com.Parameters.AddWithValue("@Prefix", "!");
                     com.Parameters.AddWithValue("@GuildID", guild.Id);
+                    com.Parameters.AddWithValue("@ChannelID", guild.DefaultChannel.Id);
                     com.ExecuteNonQuery();
                     string str = "Guild Config for " + guild.Name + " created.";
                     Console.WriteLine(str);

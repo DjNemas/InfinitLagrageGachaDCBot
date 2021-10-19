@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using System.Data.SQLite;
+using Discord.WebSocket;
 
 namespace InfinitLagrageGachaDCBot.Commands
 {
@@ -22,7 +23,21 @@ namespace InfinitLagrageGachaDCBot.Commands
                 com.Parameters.AddWithValue("GuildID", Context.Guild.Id);
                 com.ExecuteNonQuery();
             }
-            await Context.Channel.SendMessageAsync("Prefix geupdated!");
+            await Context.Channel.SendMessageAsync("Prefix updated!");
+        }
+
+        [Command("channelid")]
+        [RequireOwner]
+        public async Task ChannelID(SocketGuildChannel channel)
+        {
+            using (SQLiteCommand com = Database.DB.CreateCommand())
+            {
+                com.CommandText = "UPDATE GuildConfig SET ChannelID = @ChannelID WHERE GuildID = @GuildID";
+                com.Parameters.AddWithValue("@ChannelID", channel.Id);
+                com.Parameters.AddWithValue("GuildID", Context.Guild.Id);
+                com.ExecuteNonQuery();
+            }
+            await Context.Channel.SendMessageAsync("Channel updated!");
         }
     }
 }

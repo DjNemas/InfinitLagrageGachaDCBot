@@ -22,6 +22,7 @@ namespace InfinitLagrageGachaDCBot.Database
                                 ""ID"" INTEGER NOT NULL UNIQUE,
                                 ""Prefix""    TEXT NOT NULL,
                                 ""GuildID""   INTEGER NOT NULL UNIQUE,
+                                ""ChannelID""   INTEGER NOT NULL UNIQUE,
                                 PRIMARY KEY(""ID"" AUTOINCREMENT)
                                 );";
                 try
