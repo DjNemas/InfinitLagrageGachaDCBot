@@ -10,12 +10,55 @@ using InfinitLagrageGachaDCBot.Files;
 
 public class LoggingService
 {
+	private readonly DiscordSocketClient _client;
+	private readonly CommandService _command;
 	public LoggingService(DiscordSocketClient client, CommandService command)
 	{
-		client.Log += LogAsync;
-		command.Log += LogAsync;
+		_client = client;
+		_command = command;
+
+		_client.Log += LogAsync;
+		_command.Log += LogAsync;
+		_command.CommandExecuted += CommandExecuted;
 	}
-	private Task LogAsync(LogMessage message)
+
+    private async Task CommandExecuted(Optional<CommandInfo> arg1, ICommandContext arg2, IResult arg3)
+    {
+		if (arg3.Error == CommandError.BadArgCount)
+        {
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+        }
+		if (arg3.Error == CommandError.MultipleMatches)
+		{
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+		}
+		if (arg3.Error == CommandError.ObjectNotFound)
+		{
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+		}
+		if (arg3.Error == CommandError.ParseFailed)
+		{
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+		}
+		if (arg3.Error == CommandError.UnknownCommand)
+		{
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+		}
+		if (arg3.Error == CommandError.UnmetPrecondition)
+		{
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+		}
+		if (arg3.Error == CommandError.Unsuccessful)
+		{
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+		}
+		if (arg3.Error == CommandError.Exception)
+		{
+			await arg2.Channel.SendMessageAsync(arg3.ErrorReason);
+		}
+	}
+
+    private Task LogAsync(LogMessage message)
 	{
 		if (message.Exception is CommandException cmdException)
 		{

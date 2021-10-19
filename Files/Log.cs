@@ -12,10 +12,10 @@ namespace InfinitLagrageGachaDCBot.Files
         private static string environmentPath = Environment.CurrentDirectory;
         private static string logFolder = "/logs/";
         private static string formatDate = "dd.MM.yyyy";
-        private static string formatTime = "HH:mm:ss";
+        //private static string formatTime = "HH:mm:ss";
         private static string formatFullDate = "dd.MM.yyyy HH:mm:ss";
 
-        public static void LogMain(string msg, LogLevel mode)
+        public static void LogMain(string msg, LogLevel mode = LogLevel.Log)
         {
             string strMode = "";
             switch (mode)
