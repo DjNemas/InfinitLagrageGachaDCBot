@@ -23,7 +23,7 @@ namespace InfinitLagrageGachaDCBot.Commands
                 com.Parameters.AddWithValue("GuildID", Context.Guild.Id);
                 com.ExecuteNonQuery();
             }
-            await Context.Channel.SendMessageAsync("Prefix updated!");
+            await ReplyAsync("Prefix updated!");
         }
 
         [Command("channelid")]
@@ -37,7 +37,7 @@ namespace InfinitLagrageGachaDCBot.Commands
                 com.Parameters.AddWithValue("GuildID", Context.Guild.Id);
                 com.ExecuteNonQuery();
             }
-            await Context.Channel.SendMessageAsync("Channel updated!");
+            await ReplyAsync("Channel updated!");
         }
     }
 }

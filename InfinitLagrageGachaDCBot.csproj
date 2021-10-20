@@ -6,6 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <Compile Remove="Res\CasualGameButtonsVol01\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <EmbeddedResource Remove="Res\CasualGameButtonsVol01\**" />
+    <None Remove="NewFolder\**" />
+    <None Remove="Res\CasualGameButtonsVol01\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.4.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.115" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
