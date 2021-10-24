@@ -11,9 +11,9 @@ namespace InfinitLagrageGachaDCBot.Database
     {
         public static readonly List<Ships> shipList = new List<Ships>();
 
-        public string name { get; private set; }
-        public ShipType type { get; private set; }
-        public Image shipImage { get; private set; } 
+        public ShipName ShipName { get; private set; }
+        public ShipType ShipType { get; private set; }
+        public Image ShipImage { get; private set; }
 
 
         private static readonly string shipFolder = "./res/ships/";
@@ -25,41 +25,41 @@ namespace InfinitLagrageGachaDCBot.Database
         private static readonly string fighterFolder = "fighter/";
         private static readonly string corvetsFolder = "corvets/";
 
-        public Ships(string _name, ShipType _type)
+        public Ships(ShipName _name, ShipType _type)
         {
-            this.name = _name;
-            this.type = _type;
+            this.ShipName = _name;
+            this.ShipType = _type;
         }
 
         public static void CreatShipList()
         {
             // Firgats
-            Ships ship = new Ships("Carilion", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "carilion.png");
+            Ships ship = new Ships(ShipName.Carilion, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "carilion.png");
             shipList.Add(ship);
-            ship = new Ships("FG300", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "fg300.png");
+            ship = new Ships(ShipName.FG300, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "fg300.png");
             shipList.Add(ship);
-            ship = new Ships("Mare Tranquillitatis", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "mare_tranquillitatis.png");
+            ship = new Ships(ShipName.MareTranquillitatis, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "mare_tranquillitatis.png");
             shipList.Add(ship);
-            ship = new Ships("Mare Nubium", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "mare_nubium.png");
+            ship = new Ships(ShipName.MareNubium, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "mare_nubium.png");
             shipList.Add(ship);
-            ship = new Ships("Mare Serenitatis", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "mare_serenitatis.png");
+            ship = new Ships(ShipName.MareSerenitatis, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "mare_serenitatis.png");
             shipList.Add(ship);
-            ship = new Ships("Noma M470", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "noma_m470.png");
+            ship = new Ships(ShipName.NomaM470, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "noma_m470.png");
             shipList.Add(ship);
-            ship = new Ships("Reliat", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "reliat.png");
+            ship = new Ships(ShipName.Reliat, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "reliat.png");
             shipList.Add(ship);
-            ship = new Ships("Ruby", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "ruby.png");
+            ship = new Ships(ShipName.Ruby, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "ruby.png");
             shipList.Add(ship);
-            ship = new Ships("Xenostringer", ShipType.frigate);
-            ship.shipImage = Image.FromFile(shipFolder + frigateFolder + "xenostringer.png");
+            ship = new Ships(ShipName.Xenostringer, ShipType.frigate);
+            ship.ShipImage = Image.FromFile(shipFolder + frigateFolder + "xenostringer.png");
             shipList.Add(ship);
         }
     }
@@ -73,5 +73,19 @@ namespace InfinitLagrageGachaDCBot.Database
         carrier,
         fighter,
         corvets
+    }
+
+    public enum ShipName
+    {
+        Carilion,
+        FG300,
+        MareTranquillitatis,
+        MareNubium,
+        MareSerenitatis,
+        NomaM470,
+        Reliat,
+        Ruby,
+        Xenostringer
+
     }
 }

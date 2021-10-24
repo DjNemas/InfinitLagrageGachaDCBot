@@ -44,9 +44,9 @@ namespace InfinitLagrageGachaDCBot
 
                                 Font font = new Font(new FontFamily("Arial"), 14, FontStyle.Regular);
                                 Brush brush = Brushes.LightGray;
-                                g.DrawString(player.ueCoin.ToString(), font, brush, new RectangleF(110, 60, 90, 40));
-                                g.DrawString(player.proxima.ToString(), font, brush, new RectangleF(210, 60, 90, 40));
-                                g.DrawString(player.sCoin.ToString(), font, brush, new RectangleF(310, 60, 90, 40));
+                                g.DrawString(player.UECoin.ToString(), font, brush, new RectangleF(110, 60, 90, 40));
+                                g.DrawString(player.Proxima.ToString(), font, brush, new RectangleF(210, 60, 90, 40));
+                                g.DrawString(player.SCoin.ToString(), font, brush, new RectangleF(310, 60, 90, 40));
                             }
                         }
                     }

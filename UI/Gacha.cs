@@ -1,4 +1,5 @@
-﻿using InfinitLagrageGachaDCBot.Database;
+﻿using Discord.Commands;
+using InfinitLagrageGachaDCBot.Database;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,7 +13,7 @@ namespace InfinitLagrageGachaDCBot.UI
 {
     public class Gacha
     {
-        public static List<Stream> GetTestGacha10()
+        public static List<Stream> GetTestGacha10(SocketCommandContext context, PlayerAccount player)
         {
             List<Ships> shipsResult = new List<Ships>();
             
@@ -58,6 +59,32 @@ namespace InfinitLagrageGachaDCBot.UI
                 }
             }
 
+            foreach (var result in shipsResult)
+            {
+                bool hasShip = false;
+                PlayerShips playerShip = null;
+                foreach (var playerShips in player.PlayerShipList)
+                {
+                    
+                    if (playerShips.ShipName == result.ShipName)
+                    {
+                        hasShip = true;
+                        playerShip = playerShips;
+                    }
+                }
+                if (hasShip)
+                {
+                    playerShip.IncreasShipCount();
+                    playerShip.UpdateCountDB();
+                }
+                else
+                {
+                    PlayerShips newShip = new PlayerShips(context.User.Id, context.Guild.Id, result.ShipName, result.ShipType);
+                    player.PlayerShipList.Add(newShip);
+                    newShip.InsertIntoDB();
+                }
+            }
+
             List<Stream> streamList = new List<Stream>();
             streamList.Add(Create400x200(shipsResult[0], shipsResult[1], shipsResult[2], shipsResult[3]));
             streamList.Add(Create400x200(shipsResult[4], shipsResult[5], shipsResult[6], shipsResult[7]));
@@ -70,13 +97,13 @@ namespace InfinitLagrageGachaDCBot.UI
             MemoryStream ms = new MemoryStream();
             int shipWidth = 200;
             int shipHeight = 100;
-            using (Bitmap s1 = new Bitmap(ship1.shipImage, new Size(shipWidth, shipHeight)))
+            using (Bitmap s1 = new Bitmap(ship1.ShipImage, new Size(shipWidth, shipHeight)))
             {
-                using (Bitmap s2 = new Bitmap(ship2.shipImage, new Size(shipWidth, shipHeight)))
+                using (Bitmap s2 = new Bitmap(ship2.ShipImage, new Size(shipWidth, shipHeight)))
                 {
-                    using (Bitmap s3 = new Bitmap(ship3.shipImage, new Size(shipWidth, shipHeight)))
+                    using (Bitmap s3 = new Bitmap(ship3.ShipImage, new Size(shipWidth, shipHeight)))
                     {
-                        using (Bitmap s4 = new Bitmap(ship4.shipImage, new Size(shipWidth, shipHeight)))
+                        using (Bitmap s4 = new Bitmap(ship4.ShipImage, new Size(shipWidth, shipHeight)))
                         {
                             using (Bitmap combined = new Bitmap(400, 200))
                             {
@@ -103,9 +130,9 @@ namespace InfinitLagrageGachaDCBot.UI
             MemoryStream ms = new MemoryStream();
             int shipWidth = 200;
             int shipHeight = 100;
-            using (Bitmap s1 = new Bitmap(ship1.shipImage, new Size(shipWidth, shipHeight)))
+            using (Bitmap s1 = new Bitmap(ship1.ShipImage, new Size(shipWidth, shipHeight)))
             {
-                using (Bitmap s2 = new Bitmap(ship2.shipImage, new Size(shipWidth, shipHeight)))
+                using (Bitmap s2 = new Bitmap(ship2.ShipImage, new Size(shipWidth, shipHeight)))
                 {
                     using (Bitmap combined = new Bitmap(400, 100))
                     {

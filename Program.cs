@@ -59,6 +59,7 @@ namespace InfinitLagrageGachaDCBot
             Files.DB.CreateDBFile();
             Database.GuildConfig.CreateTable();
             Database.PlayerAccount.CreateTable();
+            Database.PlayerShips.CreateTable();
             Database.Ships.CreatShipList();
         }
     }

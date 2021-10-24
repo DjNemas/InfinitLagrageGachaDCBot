@@ -64,7 +64,7 @@ namespace InfinitLagrageGachaDCBot
         [Command("test10")]
         public async Task Test10()
         {
-            PlayerAccount player = new PlayerAccount(Context.User.Id, Context.Guild.Id);
+            PlayerAccount player = PlayerAccount.GetPlayerFromDB(Context.User.Id, Context.Guild.Id);
             if (player == null)
             {
                 await ReplyAsync(Context.User.Username + " You don't have a Profil here. Please create one first!");
@@ -72,7 +72,7 @@ namespace InfinitLagrageGachaDCBot
             }
             else
             {
-                List<Stream> streamList = UI.Gacha.GetTestGacha10();
+                List<Stream> streamList = UI.Gacha.GetTestGacha10(Context, player);
                 await ReplyAsync(Context.User.Mention + " You pulled this!");
                 await Context.Channel.SendFileAsync(streamList[0], "result1.png");
                 await Context.Channel.SendFileAsync(streamList[1], "result2.png");

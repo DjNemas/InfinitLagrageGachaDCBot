@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Drawing;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using static InfinitLagrageGachaDCBot.Files.Log;
 
 namespace InfinitLagrageGachaDCBot.Database
@@ -16,10 +13,34 @@ namespace InfinitLagrageGachaDCBot.Database
         public string discordAccountName { get; private set; }
         private ulong discordAccountID;
         private ulong discordGuildID;
-        public int proxima { get; private set; }
-        public int ueCoin { get; private set; }
-        public int sCoin { get; private set; }
-        public int ueCoinChestLimit { get; private set; }
+        public int Proxima { get; private set; }
+        public int UECoin { get; private set; }
+        public int SCoin { get; private set; }
+        public int UECoinChestLimit { get; private set; }
+
+        public List<PlayerShips> PlayerShipList;
+
+        public void AddShip(PlayerShips ship)
+        {
+            bool found = false;
+            PlayerShips shipInList = null;
+            foreach (var item in PlayerShipList)
+            {
+                if (ship.ShipName == item.ShipName)
+                {
+                    shipInList = item;
+                    found = true;
+                }
+            }
+            if (found)
+            {
+                shipInList.IncreasShipCount();
+            }
+            else
+            {
+                PlayerShipList.Add(ship);
+            }
+        }
 
         public static void CreateTable()
         {
@@ -60,10 +81,10 @@ namespace InfinitLagrageGachaDCBot.Database
             this.discordAccountName = discordAccountName;
             this.discordAccountID = discordAccountID;
             this.discordGuildID = discordGuildID;
-            this.proxima = proxima;
-            this.ueCoin = ueCoin;
-            this.sCoin = sCoin;
-            this.ueCoinChestLimit = ueCoinChestLimit;
+            this.Proxima = proxima;
+            this.UECoin = ueCoin;
+            this.SCoin = sCoin;
+            this.UECoinChestLimit = ueCoinChestLimit;
         }
 
         private PlayerAccount() { }
@@ -94,12 +115,16 @@ namespace InfinitLagrageGachaDCBot.Database
                         discordAccountName = reader.GetString(1),
                         discordAccountID = Convert.ToUInt64(reader.GetInt64(2)),
                         discordGuildID = Convert.ToUInt64(reader.GetInt64(3)),
-                        proxima = reader.GetInt32(4),
-                        ueCoin = reader.GetInt32(5),
-                        sCoin = reader.GetInt32(6),
-                        ueCoinChestLimit = reader.GetInt32(7)
+                        Proxima = reader.GetInt32(4),
+                        UECoin = reader.GetInt32(5),
+                        SCoin = reader.GetInt32(6),
+                        UECoinChestLimit = reader.GetInt32(7)
                     };
+                    
                 }
+                player.PlayerShipList = PlayerShips.GetPlayerShipsFromDB(player.discordAccountID, player.discordGuildID);
+                if (player.PlayerShipList == null)
+                    player.PlayerShipList = new List<PlayerShips>();
                 return player;
             }
         }
@@ -113,10 +138,10 @@ namespace InfinitLagrageGachaDCBot.Database
                 com.Parameters.AddWithValue("@DiscordAccountName", player.discordAccountName);
                 com.Parameters.AddWithValue("@DiscordAccountID", player.discordAccountID);
                 com.Parameters.AddWithValue("@DiscordGuildID", player.discordGuildID);
-                com.Parameters.AddWithValue("@Proxima", player.proxima);
-                com.Parameters.AddWithValue("@UECoin", player.ueCoin);
-                com.Parameters.AddWithValue("@SCoin", player.sCoin);
-                com.Parameters.AddWithValue("@UECoinChestLimit", player.ueCoinChestLimit);
+                com.Parameters.AddWithValue("@Proxima", player.Proxima);
+                com.Parameters.AddWithValue("@UECoin", player.UECoin);
+                com.Parameters.AddWithValue("@SCoin", player.SCoin);
+                com.Parameters.AddWithValue("@UECoinChestLimit", player.UECoinChestLimit);
                 com.ExecuteNonQuery();
             }
         }
