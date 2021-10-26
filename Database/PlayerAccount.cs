@@ -153,5 +153,30 @@ namespace InfinitLagrageGachaDCBot.Database
                 return Image.FromStream(client.OpenRead(new Uri(avatarURL)));
             }
         }
+
+        public void UpdateProximaDB()
+        {
+            using (SQLiteCommand com = DB.CreateCommand())
+            {
+                com.CommandText = "UPDATE PlayerAccount SET Proxima = @Proxima WHERE DiscordAccountID = @DiscordAccountID AND DiscordGuildID = @DiscordGuildID";
+                com.Parameters.AddWithValue("@DiscordAccountID", this.discordAccountID);
+                com.Parameters.AddWithValue("@DiscordGuildID", this.discordGuildID);
+                com.Parameters.AddWithValue("@Proxima", this.Proxima);
+                com.ExecuteNonQuery();
+            }
+        }
+        public void ReduceProxima(int value)
+        {
+            this.Proxima -= value;
+        }
+        public void AddProxima(int value)
+        {
+            this.Proxima += value;
+        }
+
+        public void SetProxima(int value)
+        {
+            this.Proxima = value;
+        }
     }
 }
