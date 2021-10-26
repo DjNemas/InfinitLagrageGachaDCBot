@@ -11,8 +11,8 @@ namespace InfinitLagrageGachaDCBot.UI
     public class Gacha
     {
         private static readonly string backgroundPath = "./res/background/gacha_background.jpg";
-        private static readonly Bitmap backgroundImage2Rows = new Bitmap(Image.FromFile(backgroundPath), new Size(400, 200));
-        private static readonly Bitmap backgroundImage1Row = new Bitmap(Image.FromFile(backgroundPath), new Size(400, 100));
+        //private static readonly Bitmap backgroundImage2Rows = new Bitmap(Image.FromFile(backgroundPath), new Size(400, 200));
+        //private static readonly Bitmap backgroundImage1Row = new Bitmap(Image.FromFile(backgroundPath), new Size(400, 100));
         private static readonly Bitmap backgroundImage = new Bitmap(Image.FromFile(backgroundPath), new Size(200, 100));
         public static List<Stream> GetProximaGacha10(SocketCommandContext context, PlayerAccount player)
         {
