@@ -20,14 +20,38 @@ namespace InfinitLagrageGachaDCBot.UI
             int[] probability = new int[] {3, 5, 10, 12, 15, 25, 30, 900 }; // Based on 1000
 
             List<Ships> shipsResult = CheckShipType(probability, true);
+            UpdatePlayerResult(shipsResult, player, context);
+            return GenerateUIPicture(shipsResult);
+        }
 
+        public static List<Stream> GetSCoinGacha10(SocketCommandContext context, PlayerAccount player)
+        {
+            // Carrier 0.3%, BattleCruiser 0.5%, Fighter 1%, Cruiser 1.2%, Corvette 1.5%, Destoyer 2.5%, Frigate 3.0%, TechPoints 90%
+            int[] probability = new int[] { 30, 50, 100, 120, 150, 250, 300}; // Based on 1000
+
+            List<Ships> shipsResult = CheckShipType(probability, false);
+            UpdatePlayerResult(shipsResult, player, context);
+            return GenerateUIPicture(shipsResult);
+        }
+
+        private static List<Stream> GenerateUIPicture(List<Ships> shipsResult)
+        {
+            List<Stream> streamList = new List<Stream>();
+            streamList.Add(Create400x200(shipsResult[0], shipsResult[1], shipsResult[2], shipsResult[3]));
+            streamList.Add(Create400x200(shipsResult[4], shipsResult[5], shipsResult[6], shipsResult[7]));
+            streamList.Add(Create400x100(shipsResult[8], shipsResult[9]));
+            return streamList;
+        }
+
+        private static void UpdatePlayerResult(List<Ships> shipsResult, PlayerAccount player, SocketCommandContext context)
+        {
             foreach (var result in shipsResult)
             {
                 bool hasShip = false;
                 PlayerShips playerShip = null;
                 foreach (var playerShips in player.PlayerShipList)
                 {
-                    
+
                     if (playerShips.ShipName == result.ShipName)
                     {
                         hasShip = true;
@@ -46,12 +70,6 @@ namespace InfinitLagrageGachaDCBot.UI
                     newShip.InsertIntoDB();
                 }
             }
-
-            List<Stream> streamList = new List<Stream>();
-            streamList.Add(Create400x200(shipsResult[0], shipsResult[1], shipsResult[2], shipsResult[3]));
-            streamList.Add(Create400x200(shipsResult[4], shipsResult[5], shipsResult[6], shipsResult[7]));
-            streamList.Add(Create400x100(shipsResult[8], shipsResult[9]));
-            return streamList;
         }
 
         private static List<Ships> CheckShipType(int[] Probability, bool hasTechPoints)
@@ -67,46 +85,46 @@ namespace InfinitLagrageGachaDCBot.UI
             for (int i = 0; i < 10; i++)
             {
                 int currentProbabilityCheck = Probability[0];
-                int rndNumber = rnd.Next(0, maxProbability + 1);
+                int rndNumber = rnd.Next(0, maxProbability);
 
                 // Carrier
-                if (rndNumber <= currentProbabilityCheck)
+                if (rndNumber < currentProbabilityCheck)
                 {
                     shipsResult.Add(Ships.shipListCarrier[rnd.Next(0, Ships.shipListCarrier.Count)]);
                 }
                 // BattleCruiser
                 currentProbabilityCheck += Probability[1];
-                if (rndNumber <= currentProbabilityCheck)
+                if (rndNumber < currentProbabilityCheck)
                 {
                     shipsResult.Add(Ships.shipListBattlecruiser[rnd.Next(0, Ships.shipListBattlecruiser.Count)]);
                 }
                 // Fighter
                 currentProbabilityCheck += Probability[2];
-                if (rndNumber <= currentProbabilityCheck)
+                if (rndNumber < currentProbabilityCheck)
                 {
                     shipsResult.Add(Ships.shipListFighter[rnd.Next(0, Ships.shipListFighter.Count)]);
                 }
                 // Cruiser
                 currentProbabilityCheck += Probability[3];
-                if (rndNumber <= currentProbabilityCheck)
+                if (rndNumber < currentProbabilityCheck)
                 {
                     shipsResult.Add(Ships.shipListCruiser[rnd.Next(0, Ships.shipListCruiser.Count)]);
                 }
                 // Corvette
                 currentProbabilityCheck += Probability[4];
-                if (rndNumber <= currentProbabilityCheck)
+                if (rndNumber < currentProbabilityCheck)
                 {
                     shipsResult.Add(Ships.shipListCorvettes[rnd.Next(0, Ships.shipListCorvettes.Count)]);
                 }
                 // Destoyer
                 currentProbabilityCheck += Probability[5];
-                if (rndNumber <= currentProbabilityCheck)
+                if (rndNumber < currentProbabilityCheck)
                 {
                     shipsResult.Add(Ships.shipListDestroyer[rnd.Next(0, Ships.shipListDestroyer.Count)]);
                 }
                 // Frigates
                 currentProbabilityCheck += Probability[6];
-                if (rndNumber <= currentProbabilityCheck)
+                if (rndNumber < currentProbabilityCheck)
                 {
                     shipsResult.Add(Ships.shipListFrigates[rnd.Next(0, Ships.shipListFrigates.Count)]);
                 }
@@ -114,7 +132,7 @@ namespace InfinitLagrageGachaDCBot.UI
                 {
                     // Techpoints
                     currentProbabilityCheck += Probability[7];
-                    if (rndNumber <= currentProbabilityCheck)
+                    if (rndNumber < currentProbabilityCheck)
                     {
                         shipsResult.Add(Ships.shipListTechpoints[rnd.Next(0, Ships.shipListTechpoints.Count)]);
                     }

@@ -87,8 +87,50 @@ namespace InfinitLagrageGachaDCBot
 
                 player.ReduceProxima(150);
                 player.UpdateProximaDB();
+                string sCoinLuck = "";
+                int random = new Random().Next(0, 101);
+                if (random < 10)
+                {
+                    player.AddSCoin(2);
+                    sCoinLuck = "You got 2 SCoins!";
+                }
+                else
+                {
+                    player.AddSCoin(1);
+                    sCoinLuck = "You got 1 SCoins!";
+                }
+                player.UpdateSCoinDB();
 
                 List<Stream> streamList = UI.Gacha.GetProximaGacha10(Context, player);
+                await ReplyAsync(Context.User.Mention + " You pulled this! " + sCoinLuck);
+                await Context.Channel.SendFileAsync(streamList[0], "result1.png");
+                await Context.Channel.SendFileAsync(streamList[1], "result2.png");
+                await Context.Channel.SendFileAsync(streamList[2], "result3.png");
+                streamList = null;
+            }
+        }
+
+        [Command("scoin")]
+        public async Task SCoin()
+        {
+            PlayerAccount player = PlayerAccount.GetPlayerFromDB(Context.User.Id, Context.Guild.Id);
+            if (player == null)
+            {
+                await ReplyAsync(Context.User.Mention + " You don't have a Profil here. Please create one first!");
+                return;
+            }
+            else
+            {
+                if (player.SCoin < 15)
+                {
+                    await ReplyAsync(Context.User.Mention + " You don't have enough SCoins!");
+                    return;
+                }
+
+                player.ReduceSCoin(15);
+                player.UpdateSCoinDB();
+
+                List<Stream> streamList = UI.Gacha.GetSCoinGacha10(Context, player);
                 await ReplyAsync(Context.User.Mention + " You pulled this!");
                 await Context.Channel.SendFileAsync(streamList[0], "result1.png");
                 await Context.Channel.SendFileAsync(streamList[1], "result2.png");

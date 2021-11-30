@@ -10,7 +10,7 @@ namespace InfinitLagrageGachaDCBot.Database
     public class PlayerAccount
     {
         private int ID;
-        public string discordAccountName { get; private set; }
+        public string DiscordAccountName { get; private set; }
         private ulong discordAccountID;
         private ulong discordGuildID;
         public int Proxima { get; private set; }
@@ -78,7 +78,7 @@ namespace InfinitLagrageGachaDCBot.Database
 
         public PlayerAccount(string discordAccountName, ulong discordAccountID, ulong discordGuildID, int proxima, int ueCoin, int sCoin, int ueCoinChestLimit)
         {
-            this.discordAccountName = discordAccountName;
+            this.DiscordAccountName = discordAccountName;
             this.discordAccountID = discordAccountID;
             this.discordGuildID = discordGuildID;
             this.Proxima = proxima;
@@ -112,7 +112,7 @@ namespace InfinitLagrageGachaDCBot.Database
                 {
                     player = new PlayerAccount() {
                         ID = reader.GetInt32(0),
-                        discordAccountName = reader.GetString(1),
+                        DiscordAccountName = reader.GetString(1),
                         discordAccountID = Convert.ToUInt64(reader.GetInt64(2)),
                         discordGuildID = Convert.ToUInt64(reader.GetInt64(3)),
                         Proxima = reader.GetInt32(4),
@@ -135,7 +135,7 @@ namespace InfinitLagrageGachaDCBot.Database
             {
                 com.CommandText = "INSERT INTO PlayerAccount (DiscordAccountName, DiscordAccountID, DiscordGuildID, Proxima, UECoin, SCoin, UECoinChestLimit) " +
                     "VALUES(@DiscordAccountName, @DiscordAccountID, @DiscordGuildID, @Proxima, @UECoin, @SCoin, @UECoinChestLimit);";
-                com.Parameters.AddWithValue("@DiscordAccountName", player.discordAccountName);
+                com.Parameters.AddWithValue("@DiscordAccountName", player.DiscordAccountName);
                 com.Parameters.AddWithValue("@DiscordAccountID", player.discordAccountID);
                 com.Parameters.AddWithValue("@DiscordGuildID", player.discordGuildID);
                 com.Parameters.AddWithValue("@Proxima", player.Proxima);
@@ -167,7 +167,14 @@ namespace InfinitLagrageGachaDCBot.Database
         }
         public void ReduceProxima(int value)
         {
-            this.Proxima -= value;
+            if (this.Proxima - value < 0)
+            {
+                this.Proxima = 0;
+            }
+            else
+            {
+                this.Proxima -= value;
+            }
         }
         public void AddProxima(int value)
         {
@@ -177,6 +184,40 @@ namespace InfinitLagrageGachaDCBot.Database
         public void SetProxima(int value)
         {
             this.Proxima = value;
+        }
+
+        public void AddSCoin(int value)
+        {
+            SCoin += value;
+        }
+
+        public void ReduceSCoin(int value)
+        {
+            if (this.SCoin - value < 0)
+            {
+                this.SCoin = 0;
+            }
+            else
+            {
+                this.SCoin -= value;
+            }
+        }
+
+        public void SetSCoin(int value)
+        {
+            this.SCoin = value;
+        }
+
+        public void UpdateSCoinDB()
+        {
+            using (SQLiteCommand com = DB.CreateCommand())
+            {
+                com.CommandText = "UPDATE PlayerAccount SET SCoin = @SCoin WHERE DiscordAccountID = @DiscordAccountID AND DiscordGuildID = @DiscordGuildID";
+                com.Parameters.AddWithValue("@DiscordAccountID", this.discordAccountID);
+                com.Parameters.AddWithValue("@DiscordGuildID", this.discordGuildID);
+                com.Parameters.AddWithValue("@SCoin", this.SCoin);
+                com.ExecuteNonQuery();
+            }
         }
     }
 }
